@@ -28,11 +28,134 @@
   color: #61dafb;
 }
 
+
+/* ALl Movies Part CSS */
+
+.movies-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  justify-content: center;
+}
+
+.movies-card {
+  width: 20vw;
+  margin: 1rem;
+  color: white;
+  position: relative;
+}
+
+.movies-img {
+  width: 20vw;
+  height: 40vh;
+}
+
+.movies-title {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
+.movie-btn-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.movies-btn {
+  position: absolute;
+  bottom: 2rem;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
+
+/* Banner Style */
+.banner-card {
+  width: 100vw;
+  margin-top: 1vh;
+  margin-bottom: 3vh;
+  position: relative;
+  height: 70vh;
+  color: white;
+}
+
+.banner-img {
+  height: 70vh;
+  width: 100vw;
+}
+
+.banner-title {
+  position: absolute;
+  top: 45vh;
+  left: 5vw;
+}
+
+.banner-text {
+  position: absolute;
+  top: 55vh;
+  left: 5vw;
+  height: 4.5rem;
+  overflow: hidden;
+  margin-right: 5vw;
+}
+
+@media screen and (max-width:400px) {
+
+  /* For Banner */
+  .banner-card {
+    height: 30vh;
+  }
+
+  .banner-img {
+    height: 30vh;
+  }
+
+  .banner-title {
+    top: 12vh;
+    left: 5vw;
+    font-size: 1.2rem;
+  }
+
+  .banner-text {
+    top: 17vh;
+    left: 5vw;
+    font-size: 0.9rem;
+    overflow: hidden;
+  }
+
+  /* For Movies Part */
+  .movies-card {
+    border: 2px solid black;
+    width: 40vw;
+    margin: 0.1rem;
+  }
+
+  .movies-img {
+    width: 40vw;
+  }
+
+  .movies-btn {
+    width: 80%;
+  }
+}
+
+/* @media screen and (max-width:768px) and (min-width:425px) {
+  .movies-card{
+    width: 25vw;
+  }
+  .movies-img{
+    width: 25vw;
+  }
+  .movies-btn{
+    width: 80%;
+  }
+} */
