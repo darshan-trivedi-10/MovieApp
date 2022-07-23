@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 export default class Movies extends Component {
     constructor() {
@@ -8,12 +10,12 @@ export default class Movies extends Component {
             hover: '',
             parr: [1],
             currPage: 1,
-            allMovies: []
+            allMovies: [],
+            favourites: []
         }
     }
 
     componentDidMount() {
-
         // Side Effect
         const that = this;
         axios.get(`https://api.themoviedb.org/3/trending/all/day?api_key=c25fb9d94890cb13303381c0d4aff20d&language=en-US&page=${this.state.currPage}`)
@@ -65,11 +67,36 @@ export default class Movies extends Component {
                 currPage: value
             }, this.pageChange)
         }
-
     }
 
+
+    handleFavourites = (movieObj) => {
+        let oldData = JSON.parse(localStorage.getItem('movies-app')) || [];
+
+        if (this.state.favourites.includes(movieObj.id)) {
+            oldData = oldData.filter((m) => m.id !== movieObj.id)
+        } else {
+            oldData.push(movieObj);
+        }
+        localStorage.setItem('movies-app', JSON.stringify(oldData));
+        this.handleFavouritesState();
+    }
+
+    handleFavouritesState = () => {
+        let oldData = JSON.parse(localStorage.getItem('movies-app')) || [];
+        let temp = oldData.map((movie) => movie.id);
+        this.setState({
+            favourites: [...temp]
+        })
+    }
+
+    passMovieObj = (movieObj) => {
+        localStorage.setItem('movies-details', JSON.stringify(movieObj));
+    }
+
+
     render() {
-        // let allMovies = movies.results;
+
         return (
             <>
                 {
@@ -77,21 +104,21 @@ export default class Movies extends Component {
                         <span className="visually-hidden">Loading...</span>
                     </div> :
                         <div>
-                            <h3 className='text-center'><strong>Trending</strong></h3>
+                            <h3 className='text-center fontStyle' style={{ fontFamily: 'emoji' }}><strong>Trending</strong></h3>
                             <div className='movies-list'>
                                 {
                                     this.state.allMovies.map((movieObj) => (
                                         <div className="card movies-card" onMouseEnter={() => this.setState({ hover: movieObj.id })} onMouseLeave={() => this.setState({ hover: '' })} >
                                             <img src={`https://image.tmdb.org/t/p/original${movieObj.backdrop_path}`} className="movies-img card-img-top" alt={movieObj.title} />
-                                            {/* <div className="card-body"> */}
-                                            <h5 className="card-title movies-title" >{movieObj.original_title}</h5>
-                                            {/* <p className="card-text movies-text">{movieObj.overview}</p> */}
+                                            <h5 className="card-title movies-title fontStyle arrow" style={{ fontSize: '1rem' }} onClick={() => this.passMovieObj(movieObj)} >
+                                                <Link to='/moviesInfo' style={{ textDecoration: 'none' }}><strong>{movieObj.original_title}</strong>
+                                                </Link>
+                                            </h5>
                                             <div className='movie-btn-wrapper'>
                                                 {
-                                                    this.state.hover === movieObj.id && <a className="btn btn-primary movies-btn">Add to Favourites</a>
+                                                    this.state.hover === movieObj.id && <button className="btn btn-primary movies-btn" onClick={() => this.handleFavourites(movieObj)}>{this.state.favourites.includes(movieObj.id) ? "Remove from Favourites" : "Add to Favourites"}</button>
                                                 }
                                             </div>
-                                            {/* </div> */}
                                         </div>
                                     ))
                                 }</div>
@@ -108,8 +135,6 @@ export default class Movies extends Component {
                                     </ul>
                                 </nav>
                             </div>
-
-
                         </div>
                 }
             </>
